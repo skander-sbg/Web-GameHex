@@ -1,0 +1,60 @@
+{% extends 'baseAdmin.html.twig' %}
+
+
+
+{% block title %}Product index{% endblock %}
+
+{% block body %}
+
+<style>
+    .prodImg {
+        width: 3rem;
+        height: 3rem;
+    }
+</style>
+
+<h1>Product index</h1>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Ref</th>
+            <th>Name</th>
+            <th>Description</th>
+            <th>Price</th>
+            <th>Review</th>
+            <th>State</th>
+            <th>Picture</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for product in products %}
+        <tr>
+            <td>{{ product.id }}</td>
+            <td>{{ product.ref }}</td>
+            <td>{{ product.name }}</td>
+            <td>{{ product.description }}</td>
+            <td>{{ product.price }}</td>
+            <td>{{ product.review }}</td>
+            <td>{{ product.state }}</td>
+            <td>
+                <img class="prodImg" src="{{ asset('/users/5/'~ product.imgURL) }}"></img>
+            <td>
+                <div class="flex row">
+                    <a href="{{ path('app_product_show', {'id': product.id}) }}" class="btn btn-dark mr-2">show</a>
+                    <a href="{{ path('app_product_edit', {'id': product.id}) }}" class="btn btn-success">edit</a>
+                </div>
+            </td>
+        </tr>
+        {% else %}
+        <tr>
+            <td colspan="8">no records found</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+<a class="btn btn-success ml-9" href="{{ path('app_product_new') }}">Create new</a>
+
+
+{% endblock %}

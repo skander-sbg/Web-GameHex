@@ -1,0 +1,153 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}TeamMates{% endblock %}
+
+{% block body %}
+    <h1>TeamMates</h1>
+
+    <link rel="stylesheet" href="{{asset("../assets/css/quotes.css")}}">
+
+    <!-- START: Teammate Card -->
+
+
+
+
+
+                        {% for team_mate in team_mates %}
+                            <div class="nk-teammate-card">
+                            <div class="nk-teammate-card-info">
+                                <table>
+                                    <tbody>
+                    <td>
+                            <tr>
+                                <td><strong class="h5">Riot ID: </strong>&nbsp;&nbsp;&nbsp;</td>
+                                <td><strong class="h5">{{ team_mate.riotId }}</strong></td>
+                            </tr>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong class="h5">Role:</strong>
+                    </td>
+                    <td>
+                        <strong class="h5">{{ team_mate.memberRole }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong class="h5">Phone Number: </strong>
+                    </td>
+                    <td>
+                        <strong class="h5">{{ team_mate.memberPhone }}</strong>
+                    </td>
+                </tr>
+                <tr>
+                    <td>
+                        <strong class="h5">E-mail</strong>
+                    </td>
+                    <td>
+                        <strong class="h5">{{ team_mate.memberMail }}</strong>
+                    </td>
+                </tr>
+
+                </tbody>
+            </table>
+
+        </div>
+
+    </div>
+                            <a href="{{ path('app_team_mates_show', {'riotId': team_mate.riotId}) }}">show</a>
+                            <a href="{{ path('app_team_mates_edit', {'riotId': team_mate.riotId}) }}">edit</a>
+                        {% else %}
+                            <tr>
+                                <td colspan="5">no records found</td>
+                            </tr>
+                        {% endfor %}
+    <a href="{{ path('app_team_mates_new') }}">Create new</a>
+
+
+
+
+    <div class="wrapper">
+        <header>Quote of the Day</header>
+        <div class="content">
+            <div class="quote-area">
+                <i class="fas fa-quote-left"></i>
+                <p class="quote">Never give up because you never know if the next try is going to be the one that works.</p>
+                <i class="fas fa-quote-right"></i>
+            </div>
+            <div class="author">
+                <span>__</span>
+                <span class="name">Mary Kay Ash</span>
+            </div>
+        </div>
+        <div class="buttons">
+            <div class="features">
+                <ul>
+                    <li class="speech"><i class="fas fa-volume-up"></i></li>
+                    <li class="copy"><i class="fas fa-copy"></i></li>
+                    <li class="twitter"><i class="fab fa-twitter"></i></li>
+                    <li class="quit"><i class="fab fa-quit"></i></li>
+                </ul>
+                <button>New Quote</button>
+            </div>
+        </div>
+
+
+
+        <div class="hide top">  </div>
+        <div class="hide bottom">  </div>
+    </div>
+
+
+
+
+
+
+
+    <script>
+
+        const quoteText = document.querySelector(".quote"),
+            quoteBtn = document.querySelector("button"),
+            authorName = document.querySelector(".name"),
+            speechBtn = document.querySelector(".speech"),
+            copyBtn = document.querySelector(".copy"),
+            twitterBtn = document.querySelector(".twitter"),
+            synth = speechSynthesis;
+        function randomQuote(){
+            quoteBtn.classList.add("loading");
+            quoteBtn.innerText = "Loading Quote...";
+            fetch("http://api.quotable.io/random").then(response => response.json()).then(result => {
+                quoteText.innerText = result.content;
+                authorName.innerText = result.author;
+                quoteBtn.classList.remove("loading");
+                quoteBtn.innerText = "New Quote";
+            });
+        }
+        speechBtn.addEventListener("click", ()=>{
+            if(!quoteBtn.classList.contains("loading")){
+                let utterance = new SpeechSynthesisUtterance(`${quoteText.innerText} by ${authorName.innerText}`);
+                synth.speak(utterance);
+                setInterval(()=>{
+                    !synth.speaking ? speechBtn.classList.remove("active") : speechBtn.classList.add("active");
+                }, 10);
+            }
+        });
+        copyBtn.addEventListener("click", ()=>{
+            navigator.clipboard.writeText(quoteText.innerText);
+        });
+        twitterBtn.addEventListener("click", ()=>{
+            let tweetUrl = `https://twitter.com/intent/tweet?url=${quoteText.innerText}`;
+            window.open(tweetUrl, "_blank");
+        });
+
+        quoteBtn.addEventListener("click", randomQuote);
+
+    </script>
+
+
+    <!-- END: Teammate Card -->
+
+
+
+{% endblock %}

@@ -1,0 +1,26 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Articles{% endblock %}
+
+{% block body %}
+    <h1>Articles</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ article.id }}</td>
+            </tr>
+            <tr>
+                <th>Content</th>
+                <td>{{ article.content }}</td>
+            </tr>
+        </tbody>
+    </table>
+    <center>
+    <a href="{{ path('app_articles_indexAdmin') }}">back to list</a>
+
+    <a href="{{ path('app_articles_editAdmin', {'id': article.id}) }}">edit</a>
+    </center>
+    {{ include('articles/_delete_formAdmin.html.twig') }}
+{% endblock %}

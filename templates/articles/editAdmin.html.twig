@@ -1,0 +1,13 @@
+{% extends 'baseAdmin.html.twig' %}
+
+{% block title %}Edit Articles{% endblock %}
+
+{% block body %}
+    <h1>Edit Articles</h1>
+
+    {{ include('articles/_formAdmin.html.twig', {'button_label': 'Update'}) }}
+    <center>
+    <a href="{{ path('app_articles_indexAdmin') }}">back to list</a>
+    </center>
+    {{ include('articles/_delete_formAdmin.html.twig') }}
+{% endblock %}
